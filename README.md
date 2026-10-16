@@ -11,7 +11,7 @@ Este projeto consiste no desenvolvimento de uma aplicação prática (Software) 
 ## 2. Integrantes
 * Rafael Moutinho Tessarotto (RA: 10395682)[cite: 1]
 * Mateus Teles Magalhães (RA: 10427410)[cite: 1]
-* Gabriel Erick Mendes (RA: 10420391)[cite: 1]
+* Gabriel Erick Mendes (RA: 10420391)
 
 ## 3. Escopo e Funcionamento
 O funcionamento da aplicação é baseado em duas informações fundamentais fornecidas pelo usuário:
@@ -36,3 +36,9 @@ Ao final do desenvolvimento, serão disponibilizados neste repositório:
 1. Clone este repositório: `git clone [URL_DO_REPOSITORIO]`
 2. [Instrução de instalação de dependências]
 3. [Instrução de execução ou compilação do software]
+
+
+
+
+falta
+pyinstaller --onefile --windowed main.py
