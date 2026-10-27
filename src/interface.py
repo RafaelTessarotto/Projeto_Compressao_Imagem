@@ -45,7 +45,6 @@ class AppCompressor:
             self.label_arquivo.config(text=f"Selecionado: {nome_arquivo}", fg="black")
 
     def executar_compressao(self):
-        # Validações antes de rodar o algoritmo
         if not self.caminho_imagem_entrada:
             messagebox.showwarning("Atenção", "Por favor, selecione uma imagem primeiro.")
             return
@@ -57,16 +56,16 @@ class AppCompressor:
 
         tamanho_alvo_kb = int(tamanho_digitado)
         
-        # Gerar automaticamente o nome do arquivo de saída na mesma pasta do original
         diretorio_origem = os.path.dirname(self.caminho_imagem_entrada)
         nome_original = os.path.basename(self.caminho_imagem_entrada)
         nome_sem_extensao = os.path.splitext(nome_original)[0]
         caminho_saida = os.path.join(diretorio_origem, f"{nome_sem_extensao}_comprimida.jpg")
 
-        # Chama a função do compressor.py passando os dados
-        sucesso = self.funcao_compressao(self.caminho_imagem_entrada, caminho_saida, tamanho_alvo_kb)
+        # Recebe o status (True/False) e a mensagem gerada pela lógica
+        sucesso, mensagem = self.funcao_compressao(self.caminho_imagem_entrada, caminho_saida, tamanho_alvo_kb)
 
+        # Exibe o pop-up correto baseado no resultado
         if sucesso:
-            messagebox.showinfo("Sucesso", f"Imagem comprimida com sucesso!\n\nSalva como:\n{nome_sem_extensao}_comprimida.jpg")
+            messagebox.showinfo("Sucesso", mensagem)
         else:
-            messagebox.showerror("Erro", "Ocorreu um erro durante a compressão da imagem.")
+            messagebox.showwarning("Aviso de Limite", mensagem)

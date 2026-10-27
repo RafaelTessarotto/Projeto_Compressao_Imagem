@@ -10,9 +10,21 @@ def comprimir_imagem_para_tamanho(caminho_entrada, caminho_saida, tamanho_maximo
         if imagem.mode in ("RGBA", "P", "LA"):
             imagem = imagem.convert("RGB")
     except Exception as e:
-        print(f"Erro ao processar a imagem de entrada: {e}")
-        return False
+        return False, f"Erro ao processar a imagem de entrada: {e}"
 
+    # TESTE DE LIMITE MÍNIMO: Verifica se é fisicamente possível atingir o alvo
+    buffer_min = io.BytesIO()
+    imagem.save(buffer_min, format="JPEG", quality=1)
+    tamanho_min_bytes = buffer_min.tell()
+    tamanho_min_kb = tamanho_min_bytes / 1024
+
+    # Se a qualidade mínima ainda for maior que o alvo, aborta e avisa o limite
+    if tamanho_min_bytes > tamanho_maximo_bytes:
+        msg_erro = (f"O limite de {tamanho_maximo_kb} KB é muito rigoroso para esta resolução.\n\n"
+                    f"O tamanho mínimo possível para esta imagem é {tamanho_min_kb:.2f} KB.")
+        return False, msg_erro
+
+    # Se for possível, inicia a busca binária
     limite_inferior = 1
     limite_superior = 100
     melhor_qualidade = 1
@@ -32,31 +44,14 @@ def comprimir_imagem_para_tamanho(caminho_entrada, caminho_saida, tamanho_maximo
 
     try:
         imagem.save(caminho_saida, format="JPEG", quality=melhor_qualidade)
-        
-        tamanho_original_kb = os.path.getsize(caminho_entrada) / 1024
         tamanho_final_kb = os.path.getsize(caminho_saida) / 1024
+        nome_saida = os.path.basename(caminho_saida)
         
-        print("\n--- Resultado da Compressão ---")
-        print(f"Tamanho Original: {tamanho_original_kb:.2f} KB")
-        print(f"Tamanho Final: {tamanho_final_kb:.2f} KB (Alvo: {tamanho_maximo_kb} KB)")
-        print(f"Qualidade JPEG utilizada: {melhor_qualidade}/100")
-        
-        if tamanho_final_kb > tamanho_maximo_kb:
-            print("Aviso: O limite estipulado é muito rigoroso para as dimensões da imagem.")
-            
-        return True
+        msg_sucesso = (f"Imagem comprimida com sucesso!\n\n"
+                       f"Salva como: {nome_saida}\n"
+                       f"Tamanho Final: {tamanho_final_kb:.2f} KB\n"
+                       f"Qualidade utilizada: {melhor_qualidade}/100")
+        return True, msg_sucesso
         
     except Exception as e:
-        print(f"Erro ao salvar a imagem final: {e}")
-        return False
-
-if __name__ == "__main__":
-    # Variáveis de teste
-    imagem_teste = "teste.png" 
-    imagem_resultado = "resultado.png"
-    tamanho_alvo = 500 # Tamanho máximo desejado em KB
-    
-    if os.path.exists(imagem_teste):
-        comprimir_imagem_para_tamanho(imagem_teste, imagem_resultado, tamanho_alvo)
-    else:
-        print(f"Erro: Coloque uma imagem chamada '{imagem_teste}' na mesma pasta onde está executando o script.")
+        return False, f"Erro ao salvar a imagem final: {e}"
