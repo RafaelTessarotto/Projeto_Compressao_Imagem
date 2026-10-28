@@ -35,22 +35,4 @@ Ao final do desenvolvimento, são disponibilizados neste repositório:
 
 ## 6. Como Executar
 
-**Opção A: Utilização Direta (Executável)**
-A forma mais simples de testar a aplicação não requer a instalação do Python.
-1. Aceda à pasta `dist/` neste repositório.
-2. Faça o download do ficheiro `main.exe`.
-3. Execute o ficheiro com um duplo clique.
-
-**Opção B: Executar a partir do Código-Fonte (Para Desenvolvimento)**
-1. Clone este repositório: `git clone https://github.com/RafaelTessarotto/Projeto_Compressao_Imagem.git`
-2. Navegue até à pasta do projeto e crie um ambiente virtual: `python -m venv venv`
-3. Ative o ambiente virtual:
-   - Windows: `.\venv\Scripts\activate`
-   - Linux/Mac: `source venv/bin/activate`
-4. Instale as dependências necessárias: `pip install -r requirements.txt`
-5. Inicie a aplicação: `python main.py`
-
-
-
-falta
-pyinstaller --onefile --windowed main.py
+Baixe o executável disponível em "Releases" na barra direita do GitHub. O .exe já está pronto para rodar em máquinas Windows.
